@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+{% for resource in resource_get('meta') %}
+        <meta{% for k,v in resource.attributes %} {{ k }}="{{ v }}"{% endfor %} />
+{% endfor %}
+        <title>{{ resource_title() }}</title>
+{% for resource in resource_get('stylesheet') %}
+        {% if resource.condition %}<!--[if {{ resource.condition }}]>{% endif %}<link href="{{ resource_path(resource.stylesheet) }}" media="{{ resource.media }}" rel="stylesheet" type="text/css" />{% if resource.condition %}<![endif]-->x{% endif %}
+
+{% endfor %}
+{% for resource in resource_get('style') %}
+        <style type="text/css">
+            <!--
+                {{ resource.style }}
+            -->
+        </style>
+{% endfor %}
+{% for resource in resource_get('scriptfile') %}
+        <script type="text/javascript" src="{{ resource_path(resource.file) }}"></script>
+{% endfor %}
+{% for resource in resource_get('script') %}
+        <script type="text/javascript">
+                {% autoescape false %}{{ resource.script }}
+{% endautoescape %}
+        </script>
+{% endfor %}
+{#
+<meta name="author" content="Dennis Oehme, redfrog Software Solutions, http://www.redfrog.de" />
+<meta name="copyright" content="(c) 2011 Frankfurter Schule für Bekleidung und Mode. Alle Rechte vorbehalten." />
+<meta name="description" content="Frankfurter Schule für Bekleidung und Mode" lang="de" />
+<meta name="keywords" content="Mode, Modenschau, Modeschule, Schule, Bekleidung, Textil, Frankfurt, Schneider, Textil, Fachoberschule, Fachschule, Textilveredler, Textilreiniger, Berufsschule, Berufsfachschule, Damenschneider, Herrenschneider, Bekleidungstechnische Assistenten, Design, Fertigung, Gestaltung, Fernsehsendungen" lang="de" />
+<title>Frankfurter Schule für Bekleidung und Mode</title>
+<link href="{{ asset('bundles/gocmodeschule/favicon.ico') }}" rel="favicon" />
+<link href="{{ asset('bundles/gocmodeschule/css/base.css') }}" media="all" rel="stylesheet" type="text/css" />
+<link href="{{ asset('bundles/gocmodeschule/css/default.css') }}" media="all" rel="stylesheet" type="text/css" />
+<!--[if lte IE 9]> <link href="{{ asset('bundles/gocmodeschule/css/hacks.css') }}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+<!--[if lte IE 7]> <link href="{{ asset('bundles/gocmodeschule/css/ie6hacks.css') }}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+<link href="{{ asset('bundles/gocmodeschule/css/print.css') }}" media="print" rel="stylesheet" type="text/css" />
+<link href="{{ asset('bundles/gocmodeschule/css/custom-theme/jquery-ui-1.8.4.custom.css') }}" media="all" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.json.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.form.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.livequery.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.core.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/plugins.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/core.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.ba-hashchange.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.ajaxfileupload.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.filestyle.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery-ui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/jquery.ui.datepicker-de.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/gocmodeschule/js/vendor/tinymce/jscripts/tiny_mce/jquery.tinymce.js') }}"></script>
+<script type="text/javascript">
+    //<![CDATA[
+        jQuery(function(){$([]).run();});
+    //]]>
+</script>
+{{ resource('title') }}
+#}
+    </head>
+    <body>
+        <div id="body">
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>

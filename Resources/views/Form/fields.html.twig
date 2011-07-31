@@ -1,0 +1,151 @@
+{% block field_row %}
+{% spaceless %}
+    {% if form.parent.has('prototype') %}
+        <div class="row item">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+            <a href="#" class="add-item" title="Eintrag hinzufügen">&nbsp;</a>
+            <a href="#" class="delete-item" title="Eintrag löschen">&nbsp;</a>
+        </div>
+    {% else %}
+        <div class="row">
+            {{ form_label(form) }}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock field_row %}
+
+{% block field_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <ul class="error">
+        {% for error in errors %}
+            <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endspaceless %}
+{% endblock field_errors %}
+
+{% block choice_widget %}
+{% spaceless %}
+    {% if expanded %}
+        <div class="choice" {{ block('widget_container_attributes') }}>
+        {% for choice, child in form %}
+            {{ form_widget(child) }}
+            {{ form_label(child) }}
+            <br />
+        {% endfor %}
+        </div>
+    {% else %}
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+            {% if empty_value is not none %}
+                <option value="">{{ empty_value|trans }}</option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('widget_choice_options') }}
+                <option disabled="disabled">{{ separator }}</option>
+            {% endif %}
+            {% set options = choices %}
+            {{ block('widget_choice_options') }}
+        </select>
+    {% endif %}
+{% endspaceless %}
+{% endblock choice_widget %}
+
+{% block date_widget %}
+{% spaceless %}
+    {% if widget == 'single_text' %}
+        {{ block('text_widget') }}
+    {% else %}
+        <span class="date" {{ block('widget_container_attributes') }}>
+            {{ date_pattern|replace({
+                '{{ year }}': form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}': form_widget(form.day),
+            })|raw }}
+        </span>
+    {% endif %}
+{% endspaceless %}
+{% endblock date_widget %}
+
+{% block json_widget %}
+    {% set type = 'hidden' %}
+    {{ block('field_widget') }}
+{% endblock json_widget %}
+
+{% block json_row %}
+    {{ form_widget(form) }}
+{% endblock json_row %}
+
+{% block field_label %}
+{% spaceless %}
+    <label for="{{ id }}"{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
+        <span>{{ label|trans }}</span>
+        {% if required %}<strong>*</strong>{% endif %}
+    </label>
+{% endspaceless %}
+{% endblock field_label %}
+
+
+
+
+{% block collection_label %}
+    <label for="{{ id }}"{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
+        <span>{{ label|trans }}</span>
+        {% if required %}<strong>*</strong>{% endif %}
+        <a href="#" class="add-item" title="Eintrag hinzufügen">&nbsp;</a>
+        <a href="#" class="delete-item" title="Eintrag löschen">&nbsp;</a>
+    </label>
+{% endblock collection_label %}
+
+
+{% block collection_widget %}
+{% spaceless %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_row(prototype) }) %}
+    {% endif %}
+    {{ block('form_widget') }}
+{% endspaceless %}
+{% endblock collection_widget %}
+
+{% block collection_row %}
+{% spaceless %}
+    <div class="collection">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endspaceless %}
+{% endblock collection_row %}
+
+
+
+
+
+
+{#
+{% block collection_row %}
+    {% macro prototype(item) %}
+        <div class="item">
+            {{ form_rest(item) }}
+            <a href="#" class="add-item" title="Eintrag hinzufügen">&nbsp;</a>
+            <a href="#" class="delete-item" title="Eintrag löschen">&nbsp;</a>
+        </div>
+    {% endmacro %}
+
+    <div class="collection">
+        <script type="text/html">
+            {{ _self.prototype(form['$$name$$']) }}
+        </script>
+        {% for key, item in form %}
+            {% if key != "$$name$$" %}
+                {{ _self.prototype(item) }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+#}
+
