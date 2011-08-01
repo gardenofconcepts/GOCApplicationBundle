@@ -8,7 +8,9 @@ class TypeHandler
 {
     public function __construct($type, $class)
     {
-        Type::addType($type, $class);
+        if (!Type::hasType($type)) {
+            Type::addType($type, $class);
+        }
     }
 
     public function add()
