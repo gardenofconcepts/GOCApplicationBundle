@@ -6,13 +6,17 @@ use Doctrine\DBAL\Types\Type;
 
 class TypeHandler
 {
-    public function __construct($type, $class)
+    public function __construct()
+    {}
+
+    public function addType($type)
     {
-        if (!Type::hasType($type)) {
-            Type::addType($type, $class);
+        if (Type::hasType($type->getType())) {
+            // TODO: exceptions ignored - why?!
+            exit(sprintf('Please add `%s` type (%s) to your AppKernel', $type->getType(), $type->getClass()));
         }
     }
 
-    public function add()
+    public function onKernelRequest($request)
     {}
 }

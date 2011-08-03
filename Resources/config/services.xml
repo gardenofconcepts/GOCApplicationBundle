@@ -5,6 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="goc_application.doctrine.dbal.type_handler.class">GOC\ApplicationBundle\Doctrine\DBAL\TypeHandler</parameter>
+        <parameter key="goc_application.doctrine.dbal.type.class">GOC\ApplicationBundle\Doctrine\DBAL\Type</parameter>
         <parameter key="goc_application.form.type.json.class">GOC\ApplicationBundle\Form\Extension\Core\Type\JSONType</parameter>
         <parameter key="goc_application.twig.class">GOC\ApplicationBundle\Twig\Extension\ApplicationExtension</parameter>
     </parameters>
@@ -19,12 +21,15 @@
             <tag name="form.type" alias="json" />
         </service>
 
-        <service id="goc_application.doctrine.dbal.type.json" class="GOC\ApplicationBundle\Doctrine\DBAL\TypeHandler" scope="request">
+        <service id="goc_application.doctrine.dbal.type_handler" class="%goc_application.doctrine.dbal.type_handler.class%">
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+        </service>
+
+        <service id="goc_application.doctrine.dbal.type.json" class="%goc_application.doctrine.dbal.type.class%">
+            <tag name="doctrine.dbal.type" />
             <argument>json</argument>
             <argument>GOC\ApplicationBundle\Doctrine\DBAL\Types\JSON</argument>
-            <tag name="kernel.event_listener" event="kernel.request" method="add" />
         </service>
     </services>
 
 </container>
-    
