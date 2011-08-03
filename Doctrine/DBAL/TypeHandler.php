@@ -11,7 +11,7 @@ class TypeHandler
 
     public function addType($type)
     {
-        if (Type::hasType($type->getType())) {
+        if (!Type::hasType($type->getType())) {
             // TODO: exceptions ignored - why?!
             exit(sprintf('Please add `%s` type (%s) to your AppKernel', $type->getType(), $type->getClass()));
         }
