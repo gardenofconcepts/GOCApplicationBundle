@@ -25,11 +25,13 @@
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
 
+        <!--
         <service id="goc_application.doctrine.dbal.type.json" class="%goc_application.doctrine.dbal.type.class%">
             <tag name="doctrine.dbal.type" />
             <argument>json</argument>
             <argument>GOC\ApplicationBundle\Doctrine\DBAL\Types\JSON</argument>
         </service>
+        -->
     </services>
 
 </container>
