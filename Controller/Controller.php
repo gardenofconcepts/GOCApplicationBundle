@@ -55,7 +55,9 @@ class Controller extends SymfonyController
      */
     public function getUser()
     {
-        return $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        return (is_object($user)) ? $user : null;
     }
 
     public function renderForm($type, $entity, $options = array())
