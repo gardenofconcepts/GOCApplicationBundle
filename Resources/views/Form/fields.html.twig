@@ -56,22 +56,6 @@
 {% endspaceless %}
 {% endblock choice_widget %}
 
-{% block date_widget %}
-{% spaceless %}
-    {% if widget == 'single_text' %}
-        {{ block('text_widget') }}
-    {% else %}
-        <span class="date" {{ block('widget_container_attributes') }}>
-            {{ date_pattern|replace({
-                '{{ year }}': form_widget(form.year),
-                '{{ month }}': form_widget(form.month),
-                '{{ day }}': form_widget(form.day),
-            })|raw }}
-        </span>
-    {% endif %}
-{% endspaceless %}
-{% endblock date_widget %}
-
 {% block json_widget %}
     {% set type = 'hidden' %}
     {{ block('field_widget') }}
