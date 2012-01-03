@@ -12,14 +12,15 @@ class Pagination
     protected $pages = 1;
     protected $itemsPerPage = 50;
 
-    public static function create($query, $page, $items = 50)
+    public static function create($query, $page, $items = null)
     {
         return new self($query, $page, $items);
     }
 
-    public function __construct($query, $page, $itemsPerPage = 50)
+    public function __construct($query, $page, $itemsPerPage = null)
     {
         $this->setPage($page);
+        if ($itemsPerPage === null) $itemsPerPage = 50;
         $this->setItemsPerPage($itemsPerPage);
 
         $this->setItems( Paginate::getTotalQueryResults($query) );
