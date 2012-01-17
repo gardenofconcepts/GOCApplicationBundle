@@ -7,9 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 
 class Controller extends SymfonyController
 {
-    public function createPagination($query, $page, $items = null)
+    public function createPagination($query, $page, $items = 50)
     {
-        return $this->get('goc_pagination.factory')->create($query, $page, $items);
+        return $this->get('goc_pagination.factory')->create($query, $items, $page-1);
     }
 
     public function renderJSON($data, array $parameters = array(), Response $response = null)
@@ -68,7 +68,7 @@ class Controller extends SymfonyController
 
         if (isset($options['onvalid'])) {
             $options['onvalid'] = function($em, $entity) use ($em) {
-                
+
             };
         }
 
