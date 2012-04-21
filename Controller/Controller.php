@@ -40,7 +40,7 @@ class Controller extends SymfonyController
             $request = $this->getRequest()->attributes->get('_controller');
             $request = preg_replace('/(Action)$/', '', $request);
 
-            if (preg_match('/:([_a-z0-9]+)?$/', $request, $matches) === 1) {
+            if (preg_match('/:([_a-zA-Z0-9]+)?$/', $request, $matches) === 1) {
                 $action = $matches[1];
             } else {
                 throw new \Exception('Can\'t determine action: ' . $request);
