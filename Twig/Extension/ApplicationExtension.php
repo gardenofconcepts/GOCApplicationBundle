@@ -20,7 +20,7 @@ class ApplicationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'debug' => new \Twig_Filter_Method($this, 'debug', array('is_safe' => array('html'))),
+            'debug' => new \Twig_Function_Method($this, 'debug', array('is_safe' => array('html'))),
         );
     }
 
