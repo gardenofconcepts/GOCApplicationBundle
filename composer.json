@@ -1,0 +1,10 @@
+{
+    "name": "goc/application-bundle",
+    "description": "A helper bundle for Symfony 2-based applications",
+    "type": "library",
+    "homepage": "https://github.com/gardenofconcepts/GOCApplicationBundle.git",
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "target-dir": "GOC/ApplicationBundle"
+}
