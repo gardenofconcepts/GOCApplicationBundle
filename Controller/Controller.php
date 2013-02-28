@@ -40,6 +40,7 @@ class Controller extends SymfonyController
             } else {
                 throw new \Exception('Can\'t determine action: ' . $r);
             }
+            if (!preg_match('/Action$/', $action)) $action .= 'Action';
         }
 
         if ($controller === null) $controller = $this;
