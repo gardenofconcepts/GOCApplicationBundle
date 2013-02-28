@@ -21,33 +21,36 @@ class Controller extends SymfonyController
         return $response;
     }
 
-    public function getViewName($format = 'html', $action = null, $controller = null, $bundle = null)
+    /**
+     * Creates a view name for the current controller action
+     *
+     * @param string $format
+     * @param string $action
+     * @param \Symfony\Bundle\FrameworkBundle\Controller\Controller $controller
+     * @return string
+     * @throws \Exception
+     */
+    public function getViewName($format = null, $action = null, $controller = null)
     {
-        $name = substr(get_class($this), 0, -strlen('Controller')); // gets full class name with namespace, cut "Controller" at end of string
-        $name = str_replace('\\Controller\\', ':', $name); // removes "controller"-directory in namespace hierarchy
-        $parts = explode(':', $name); // split string in namespace and controller name
-
-
-        if ($bundle === null) {
-            $bundle = str_replace('\\', '', $parts[0]); // creates bundle name
-        }
-
-        if ($controller === null) {
-            $controller = str_replace('\\', '\\', $parts[1]); // name of controller
-        }
-
+        $request = $this->getRequest();
         if ($action === null) {
-            $request = $this->getRequest()->attributes->get('_controller');
-            $request = preg_replace('/(Action)$/', '', $request);
-
-            if (preg_match('/:([_a-zA-Z0-9]+)?$/', $request, $matches) === 1) {
+            $r = $request->attributes->get('_controller');
+            if (preg_match('/:([_a-zA-Z0-9]+)?$/', $r, $matches) === 1) {
                 $action = $matches[1];
             } else {
-                throw new \Exception('Can\'t determine action: ' . $request);
+                throw new \Exception('Can\'t determine action: ' . $r);
             }
+            if (!preg_match('/Action$/', $action)) $action .= 'Action';
         }
 
-        return sprintf('%s:%s:%s.%s.twig', $bundle, $controller, $action, $format);
+        if ($controller === null) $controller = $this;
+        if ($format === null) $request->setRequestFormat($format);
+
+        /** @var $tg \Sensio\Bundle\FrameworkExtraBundle\Templating\TemplateGuesser */
+        $tg = $this->get('sensio_framework_extra.view.guesser');
+        $view = $tg->guessTemplateName(array($controller, $action), $this->getRequest());
+
+        return $view->getLogicalName();
     }
 
     /**
