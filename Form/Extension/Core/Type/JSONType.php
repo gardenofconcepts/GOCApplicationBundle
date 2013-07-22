@@ -23,7 +23,7 @@ class JSONType extends HiddenType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->appendClientTransformer(new ArrayToJSONStringTransformer());
+        $builder->addViewTransformer(new ArrayToJSONStringTransformer());
     }
 
     /**
